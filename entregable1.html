@@ -1,102 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sobre mi</title>
-
+    <title>Sobre mí</title>
+    <link rel="stylesheet" href="stylesentregable2.css">
 </head>
-<body>
-    <h1>sobre mí</h1>
-    <p>esta página tiene el propósito de presentarme y mostrar un poco de mí</p>
-    <p>de igual manera tambies tiene el objetivo de mostrar mis avences en el curso de programacion</p>
-    <h2>presentación</h2>
-        <p>hola mi nombre es victor, tengo 22 años de edad, naci en la ciudad de barranquilla colombia, termine mis estudios en la ciudad de bogotá colombia y radico en la ciudad de santa marta colombia</p>
-        <p>soy un apasionado de la programación y la tecnología. Me encanta aprender cosas nuevas y enfrentar desafíos.</p> 
-        <p>actualmente estoy aprendiendo sobre desarrollo web y espero poder crear mis propias aplicaciones en el futuro.</p>
-        <img src="foto.jpeg" alt="retrato de Victor" width="300" height="350" srcset=""><br>
-        <h2>mis redes sociales</h2>
-        <p>aqui te dejo mis redes sociales para que puedas contactarme</p>
-        <a href="http://www.facebook.com/victor">Facebook</a><br>
-        <a href="http://www.instagram.com/victor">Instagram</a><br>
-        <a href="http://www.twitter.com/victor">Twitter</a><br>
-        <h3>mis gustos</h3>
-        <p>algunas de las cosas que me gustan son:</p>
-        <ul>
-            <li>me gusta programar</li>
-            <li>me gusta jugar videojuegos</li>
-            <li>me gusta ver peliculas y series</li>
-            <li>me gusta escuchar musica</li>
-            <li>me gusta leer libros</li>
-            <li>me gusta viajar</li>
-            <li>me gusta aprender cosas nuevas</li>
+
+<body id="principal">
+    <header id="encabezado">
+        <h1 class="titulo">Sobre mí</h1>
+        <p class="descripcion">Esta página tiene el propósito de presentarme y mostrar un poco de mí.</p>
+        <p class="descripcion">También tiene el objetivo de mostrar mis avances en el curso de programación.</p>
+    </header>
+
+    <section id="presentacion">
+        <h2 class="subtitulo">Presentación</h2>
+        <p class="texto">Hola, mi nombre es <strong>Víctor</strong>, tengo 22 años, nací en Barranquilla, terminé mis estudios en Bogotá y actualmente vivo en Santa Marta, Colombia.</p>
+        <p class="texto">Soy un apasionado de la programación y la tecnología. Me encanta aprender cosas nuevas y enfrentar desafíos.</p>
+        <p class="texto">Actualmente estoy aprendiendo sobre desarrollo web y espero poder crear mis propias aplicaciones en el futuro.</p>
+        <img src="foto.jpeg" alt="Retrato de Víctor" width="300" height="350" id="foto-perfil"><br>
+    </section>
+
+    <section id="redes">
+        <h2 class="subtitulo">Mis redes sociales</h2>
+        <p class="texto">Aquí te dejo mis redes sociales para que puedas contactarme:</p>
+        <a href="http://www.facebook.com/victor" class="enlace">Facebook</a><br>
+        <a href="http://www.instagram.com/victor" class="enlace">Instagram</a><br>
+        <a href="http://www.twitter.com/victor" class="enlace">Twitter</a><br>
+    </section>
+
+    <section id="gustos">
+        <h3 class="subtitulo">Mis gustos</h3>
+        <ul class="lista">
+            <li>Programar</li>
+            <li>Jugar videojuegos</li>
+            <li>Ver películas y series</li>
+            <li>Escuchar música</li>
+            <li>Leer libros</li>
+            <li>Viajar</li>
+            <li>Aprender cosas nuevas</li>
         </ul>
-        <h4>tareas pendientes</h4>
-        <p>estas son algunas de las tareas que tengo pendientes por hacer:</p>
-        <ol>
-            <li>practicar programación</li>
-            <li>ir a el trabajo</li>
-            <li>hacer oficios</li>
-            <li>ir al gym</li>
-            <li>leer libros</li>
-            <li>aprender inglés</li>
+    </section>
+
+    <section id="tareas">
+        <h4 class="subtitulo">Tareas pendientes</h4>
+        <ol class="lista">
+            <li>Practicar programación</li>
+            <li>Ir al trabajo</li>
+            <li>Hacer oficios</li>
+            <li>Ir al gym</li>
+            <li>Leer libros</li>
+            <li>Aprender inglés</li>
         </ol>
-        <style>
-            table {
-                border-collapse: collapse;
-                width: 50
-            }
 
-            th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-                text-align: left;
-            }
-        </style>
-        <table>
+        <table id="tabla-tareas" border="1">
             <tr>
-                <th>dia de la semana</th>
-                <th>tarea </th>
+                <th>Día de la semana</th>
+                <th>Tarea</th>
             </tr>
-            <tr>
-                <td>lunes </td>
-                <td>Practicar programación</td>
-            </tr>
-            <tr>
-                <td>martes</td> 
-                <td>Ir al trabajo</td>
-            
-            </tr>
-            <tr>
-                <td>miercoles</td>
-                <td>hacer oficios</td>
-            </tr>
-            <tr>
-                <td>jueves</td>
-                <td>Ir al gym</td>
-            
-            </tr>
-            <tr>
-                <td>viernes</td>
-                <td>Leer libros</td>
-            </tr>
-            <tr>
-                <td>sabado</td>
-                <td>aprender ingles</td>
-            </tr>
+            <tr><td>Lunes</td><td>Practicar programación</td></tr>
+            <tr><td>Martes</td><td>Ir al trabajo</td></tr>
+            <tr><td>Miércoles</td><td>Hacer oficios</td></tr>
+            <tr><td>Jueves</td><td>Ir al gym</td></tr>
+            <tr><td>Viernes</td><td>Leer libros</td></tr>
+            <tr><td>Sábado</td><td>Aprender inglés</td></tr>
         </table>
-        <form action="">
+    </section>
+
+    <section id="contacto">
+        <h3 class="subtitulo">Formulario de contacto</h3>
+        <form id="form-contacto" action="">
             <label for="nombre">Nombre:</label><br>
             <input type="text" id="nombre" name="nombre"><br>
             <label for="email">Email:</label><br>
-            <input type="email" id="email" name="email"><br> <br>
-           
-            <input type="submit" value="Enviar">
-<p>jsdgslgdkgssdk</p><br>
-
+            <input type="email" id="email" name="email"><br><br>
+            <input type="submit" value="Enviar" id="boton-enviar">
+        </form>
+    </section>
 </body>
 </html>
