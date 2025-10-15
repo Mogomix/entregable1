@@ -30,7 +30,7 @@ if (edad < 0) {
 } else {
     console.log("adultez");
 }
-*/
+
 // ciclo fo
 for (let x = 1; x <= 10; x++) {
     console.log("************");
@@ -38,4 +38,16 @@ for (let x = 1; x <= 10; x++) {
     for (let i = 1; i <= 10; i++) {
         console.log (x + " x " + i + " = " + (x*i));
     }
+}
+*/
+let c=1;
+while (c <= 10) {
+    console.log("************");
+    console.log("Tabla del " + c);
+    let j = 1;
+    while (j <= 10) {
+        console.log(c + " x " + j + " = " + (c*j));
+        j++;
+    }
+    c++;
 }
