@@ -4,46 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora con bucle</title>
+    <title>Calculadora Mejorada</title>
+
+    <!-- Enlazamos el archivo externo de estilos CSS -->
+    <link rel="stylesheet" href="estilocalculadora.css">
 </head>
 
 <body>
+    <!-- Contenedor principal de la calculadora -->
+    <div class="calculadora">
+
+        <!-- Título principal -->
+        <h1>🧮 Calculadora Mejorada</h1>
+
+        <!-- Campo para el primer número -->
+        <input type="number" id="numero1" placeholder="Primer número">
+
+        <!-- Campo para el segundo número -->
+        <input type="number" id="numero2" placeholder="Segundo número">
+
+        <!-- Menú desplegable para elegir la operación -->
+        <select id="operacion">
+            <option value="sumar">Sumar</option>
+            <option value="restar">Restar</option>
+            <option value="multiplicar">Multiplicar</option>
+            <option value="dividir">Dividir</option>
+        </select>
+
+        <!-- Botón para ejecutar el cálculo -->
+        <button id="calcular">Calcular</button>
+
+        <!-- Botón para limpiar los campos y resultado -->
+        <button id="limpiar">Limpiar</button>
+
+        <!-- Área donde se mostrará el resultado -->
+        <div id="resultado"></div>
+    </div>
+
+    <!-- Bloque de código JavaScript -->
     <script>
+        // Función que realiza la operación matemática según lo que el usuario elija
         function realizarOperacion(num1, num2, operacion) {
-            if (operacion === "sumar") {
-                return num1 + num2;
-            } else if (operacion === "restar") {
-                return num1 - num2;
-            } else if (operacion === "multiplicar") {
-                return num1 * num2;
-            } else if (operacion === "dividir") {
-                if (num2 === 0) {
-                    return 'Error: división entre cero';
-                } else {
-                    return num1 / num2;
-                }
-            } else {
-                return 'Operación no válida';
+            if (operacion === "sumar") return num1 + num2;
+            if (operacion === "restar") return num1 - num2;
+            if (operacion === "multiplicar") return num1 * num2;
+            if (operacion === "dividir") {
+                if (num2 === 0) return "❌ Error: división entre cero"; // Evita dividir por cero
+                return num1 / num2;
             }
+            return "Operación no válida"; // Si no coincide con ninguna opción
         }
 
-        let operacion = ""; // se inicializa vacía
+        // Referencias a los elementos HTML que usaremos
+        const btnCalcular = document.getElementById("calcular"); // Botón de calcular
+        const btnLimpiar = document.getElementById("limpiar");   // Botón de limpiar
+        const resultado = document.getElementById("resultado");  // Div donde se muestra el resultado
 
-        while (operacion !== "salir") {
-            operacion = prompt("Ingrese la operación (sumar, restar, multiplicar, dividir o 'salir' para terminar):");
+        // Evento que se ejecuta cuando el usuario hace clic en "Calcular"
+        btnCalcular.addEventListener("click", () => {
+            // Obtenemos los valores de los inputs y el tipo de operación seleccionada
+            const numero1 = parseFloat(document.getElementById("numero1").value);
+            const numero2 = parseFloat(document.getElementById("numero2").value);
+            const operacion = document.getElementById("operacion").value;
 
-            if (operacion === "salir") {
-                document.write("<br>Programa finalizado.");
-                break; // rompe el ciclo
+            // Validamos que ambos campos tengan números
+            if (isNaN(numero1) || isNaN(numero2)) {
+                resultado.textContent = "⚠️ Por favor, ingrese ambos números.";
+                return; // Detiene la función si hay error
             }
 
-            let numero1 = parseFloat(prompt("Ingrese el primer número:"));
-            let numero2 = parseFloat(prompt("Ingrese el segundo número:"));
+            // Llamamos a la función para realizar la operación
+            const res = realizarOperacion(numero1, numero2, operacion);
 
-            let resultado = realizarOperacion(numero1, numero2, operacion);
-            document.write("<br>El resultado de la operación es: " + resultado);
-        }
+            // Mostramos el resultado en pantalla
+            resultado.textContent = "Resultado: " + res;
+        });
+
+        // Evento para limpiar los campos y el resultado
+        btnLimpiar.addEventListener("click", () => {
+            // Vacía los campos de entrada
+            document.getElementById("numero1").value = "";
+            document.getElementById("numero2").value = "";
+
+            // Borra el texto del resultado
+            resultado.textContent = "";
+        });
     </script>
 </body>
-
 </html>
