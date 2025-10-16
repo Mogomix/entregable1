@@ -1,25 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>funciones1</title>
+    <title>calculo areas</title>
+    <link rel="stylesheet" href="estilocalculadora.css">
 </head>
+
 <body>
-    <script>
-        function mostrarMensaje() {
-            alert("Hola, este es un mensaje desde una función en JavaScript. ");
-        }
-        function sumar(a, b) {
-            alert("La suma es: " + (a + b));
-        }
-        function restar(a, b) {
-          return a - b;
-        }
-        //mostrarMensaje();
-sumar(5, 10);
-let resultado = restar(10, 5);
-document.write("La resta es: " + resultado);
-    </script>
+    <div class="calculadora">
+        <h1>Calculo de Áreas</h1>
+        <input type="number" id="base" placeholder="Base o diametro ">
+        <input type="number" id="altura" placeholder="altura">
+        <select id="figura">
+            <option value="rectangulo">Rectángulo</option>
+            <option value="triangulo">Triángulo</option>
+            <option value="circulo">circulo</option>
+        </select>
+        <button id="calcular">Calcular Área</button>
+        <button id="limpiar">Limpiar</button>
+        <div id="resultado"></div>
+        <script>
+            function realizarOperacion(base, altura, figura) {
+                if (figura === "rectangulo") return base * altura;
+                if (figura === "triangulo") return (base * altura) / 2;
+                if (figura === "circulo") return Math.PI * Math.pow((base / 2), 2); // Asumiendo que 'base' es el diámetro
+                return "Figura no válida";
+            }
+            
+
+            const btnCalcular = document.getElementById("calcular");
+            const btnLimpiar = document.getElementById("limpiar");
+            const btnresultado = document.getElementById("resultado");
+                const figuraSelect = document.getElementById("figura");
+
+            btnCalcular.addEventListener("click", () => {
+                const base = parseFloat(document.getElementById("base").value);
+                const altura = parseFloat(document.getElementById("altura").value);
+                if (isNaN(base) || isNaN(altura)) {
+                    btnresultado.innerText = "❌ Por favor ingresa números válidos.";
+                    return;
+                }
+                const area = realizarOperacion(base, altura, figuraSelect.value);
+                btnresultado.innerText = `El área del ${figuraSelect.options[figuraSelect.selectedIndex].text.toLowerCase()} es: ${area}`;
+            });
+
+            btnLimpiar.addEventListener("click", () => {
+                document.getElementById("base").value = "";
+                document.getElementById("altura").value = "";
+                document.getElementById("resultado").innerText = "";
+            });
+
+            btnCalcular.addEventListener("click", () => {
+                const base = parseFloat(document.getElementById("base").value);
+                const altura = parseFloat(document.getElementById("altura").value);
+                if (isNaN(base) || isNaN(altura)) {
+                    document.getElementById("resultado").innerText = "❌ Por favor ingresa números válidos.";
+                    return;
+                }
+                const area = calcularAreatriangulo(base, altura);
+                document.getElementById("resultado").innerText = `El área del triángulo es: ${area}`;
+            });
+        </script>
+    </div>
+
 </body>
+
 </html>
