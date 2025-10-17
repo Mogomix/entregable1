@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruleta de la Suerte</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: radial-gradient(circle at top, #141e30, #243b55);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+        text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    .wheel-container {
+        position: relative;
+        width: 360px;
+        height: 360px;
+    }
+
+    .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 6px solid #fff;
+        position: relative;
+        overflow: hidden;
+        transition: transform 4s cubic-bezier(0.25, 1, 0.5, 1);
+        box-shadow: 0 0 30px rgba(255,255,255,0.2), inset 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    .section {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 50%;
+        left: 50%;
+        transform-origin: 0% 0%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: white;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        border-right: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .pointer {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: #ffeb3b;
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+        box-shadow: 0 0 15px rgba(255,255,0,0.8);
+        z-index: 10;
+    }
+
+    .controls {
+        margin: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    button {
+        background: linear-gradient(135deg, #4a6fa5, #2c4c78);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #5b89cc, #345c8a);
+    }
+
+    .result {
+        margin-top: 15px;
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        min-height: 40px;
+    }
+
+    .models {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .model-btn {
+        background-color: #6c757d;
+        padding: 8px 18px;
+        border-radius: 20px;
+    }
+
+    .model-btn.active {
+        background: linear-gradient(135deg, #00bcd4, #008ba3);
+        box-shadow: 0 0 10px rgba(0,188,212,0.6);
+    }
+
+    .history {
+        margin-top: 30px;
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .history h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .history-list {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 10px;
+        max-height: 180px;
+        overflow-y: auto;
+        backdrop-filter: blur(5px);
+    }
+
+    .history-item {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 5px 0;
+        font-size: 0.95rem;
+    }
+
+    @media (max-width: 500px) {
+        h1 { font-size: 1.8rem; }
+        .wheel-container { width: 300px; height: 300px; }
+    }
+</style>
+</head>
+<body>
+<h1>🎡 Ruleta de la Suerte</h1>
+
+<div class="wheel-container">
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel"></div>
+</div>
+
+<div class="controls">
+    <button id="spin-btn">🎯 Girar</button>
+    <button id="clear-history">🧹 Limpiar Historial</button>
+</div>
+
+<div class="result" id="result">¡Presiona "Girar" para empezar!</div>
+
+<div class="models">
+    <button class="model-btn active" data-model="yesno">Sí / No</button>
+    <button class="model-btn" data-model="maybe">Quizás</button>
+    <button class="model-btn" data-model="colors">Colores</button>
+</div>
+
+<div class="history">
+    <h2>📜 Historial</h2>
+    <div class="history-list" id="history-list"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const wheel = document.getElementById("wheel");
+    const spinBtn = document.getElementById("spin-btn");
+    const result = document.getElementById("result");
+    const historyList = document.getElementById("history-list");
+    const clearBtn = document.getElementById("clear-history");
+    const modelBtns = document.querySelectorAll(".model-btn");
+
+    let isSpinning = false;
+    let currentModel = "yesno";
+    let rotation = 0;
+
+    const models = {
+        yesno: [
+            { text: "SÍ", color: "#4CAF50" },
+            { text: "NO", color: "#F44336" },
+            { text: "SÍ", color: "#4CAF50" },
+            { text: "NO", color: "#F44336" },
+            { text: "SÍ", color: "#4CAF50" },
+            { text: "NO", color: "#F44336" },
+        ],
+        maybe: [
+            { text: "SÍ", color: "#4CAF50" },
+            { text: "NO", color: "#F44336" },
+            { text: "TAL VEZ", color: "#FF9800" },
+            { text: "PROBABLE", color: "#2196F3" },
+            { text: "IMPROBABLE", color: "#9C27B0" },
+            { text: "DUDOSO", color: "#795548" },
+        ],
+        colors: [
+            { text: "ROJO", color: "#F44336" },
+            { text: "AZUL", color: "#2196F3" },
+            { text: "VERDE", color: "#4CAF50" },
+            { text: "AMARILLO", color: "#FFEB3B" },
+            { text: "NARANJA", color: "#FF9800" },
+            { text: "MORADO", color: "#9C27B0" },
+        ]
+    };
+
+    function drawWheel() {
+        wheel.innerHTML = "";
+        const sections = models[currentModel];
+        const angle = 360 / sections.length;
+
+        sections.forEach((s, i) => {
+            const div = document.createElement("div");
+            div.classList.add("section");
+            div.style.background = s.color;
+            div.style.transform = `rotate(${i * angle}deg) skewY(${90 - angle}deg)`;
+            div.textContent = s.text;
+            wheel.appendChild(div);
+        });
+    }
+
+    function spin() {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        const sections = models[currentModel];
+        const randomSpin = 720 + Math.floor(Math.random() * 360);
+        rotation += randomSpin;
+        wheel.style.transform = `rotate(${rotation}deg)`;
+
+        setTimeout(() => {
+            const angle = 360 / sections.length;
+            const normalized = (360 - (rotation % 360)) % 360;
+            const index = Math.floor(normalized / angle) % sections.length;
+            const resultItem = sections[index];
+
+            result.textContent = `Resultado: ${resultItem.text}`;
+            result.style.color = resultItem.color;
+            addToHistory(resultItem.text);
+            saveHistory();
+
+            isSpinning = false;
+        }, 4000);
+    }
+
+    function addToHistory(text) {
+        const now = new Date().toLocaleTimeString();
+        const div = document.createElement("div");
+        div.classList.add("history-item");
+        div.innerHTML = `<span>${text}</span><span>${now}</span>`;
+        historyList.prepend(div);
+    }
+
+    function saveHistory() {
+        const items = [...historyList.children].map(el => el.innerHTML);
+        localStorage.setItem("ruletaHistorial", JSON.stringify(items));
+    }
+
+    function loadHistory() {
+        const items = JSON.parse(localStorage.getItem("ruletaHistorial") || "[]");
+        items.forEach(html => {
+            const div = document.createElement("div");
+            div.classList.add("history-item");
+            div.innerHTML = html;
+            historyList.appendChild(div);
+        });
+    }
+
+    clearBtn.onclick = () => {
+        historyList.innerHTML = "";
+        localStorage.removeItem("ruletaHistorial");
+    };
+
+    modelBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            modelBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentModel = btn.dataset.model;
+            drawWheel();
+            result.textContent = "¡Presiona 'Girar' para empezar!";
+            result.style.color = "#fff";
+        });
+    });
+
+    spinBtn.onclick = spin;
+    drawWheel();
+    loadHistory();
+});
+</script>
+</body>
+</html>
